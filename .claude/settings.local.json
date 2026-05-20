@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install *)",
+      "Bash(python experiments/run_basic.py)",
+      "Bash(python experiments/run_extensions.py)",
+      "Bash(python -X utf8 experiments/run_basic.py)",
+      "Bash(python -X utf8 experiments/run_extensions.py)",
+      "Bash(python -X utf8 experiments/sensitivity_analysis.py)",
+      "Bash(python -X utf8 experiments/run_full_demo.py)",
+      "Bash(python -X utf8 experiments/model_comparison.py)",
+      "Bash(python -X utf8 experiments/run_scenarios.py)"
+    ]
+  }
+}
