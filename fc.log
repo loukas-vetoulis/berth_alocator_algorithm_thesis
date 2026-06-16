@@ -1,0 +1,101 @@
+C:\Users\Loukas\Desktop\Academic\SXOLI_WORK\4th Year\8th Semester\Thesis\2nd Assigment\berth_alocator_algorithm_thesis\experiments\..\src\models\model_final.py:351: UserWarning: The problem has an expression with dimension greater than 2. Defaulting to the SCIPY backend for canonicalization.
+  problem.solve(solver=getattr(cp, solver), verbose=verbose)
+C:\Users\Loukas\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\numpy\_core\fromnumeric.py:86: RuntimeWarning: overflow encountered in reduce
+  return ufunc.reduce(obj, axis, dtype, out, **passkwargs)
+C:\Users\Loukas\Desktop\Academic\SXOLI_WORK\4th Year\8th Semester\Thesis\2nd Assigment\berth_alocator_algorithm_thesis\experiments\..\src\models\model_final.py:351: UserWarning: The problem has an expression with dimension greater than 2. Defaulting to the SCIPY backend for canonicalization.
+  problem.solve(solver=getattr(cp, solver), verbose=verbose)
+==============================================================================
+PART A - MAIN COMPARISON (mean over seeds [0, 1, 2, 3, 4], 8 berths, 14 days)
+==============================================================================
+
+Demand 0.5x  (4 boats / 8 berths)
+  method                          gross_rev   assign%    util%   waste_m   time(s)  verify
+  --------------------------------------------------------------------------------------
+  final[base]                         16324     35.0%     5.9%        59     0.289      OK
+  final[side-by-side]                 17169     35.0%     5.4%        64     0.466      OK
+  final[soft-penalty]                 16324     35.0%     5.9%        59     0.486      OK
+  final[relocation]                   16696     35.0%     5.9%        59     0.493      OK
+  final[full-mix]                     17169     35.0%     5.4%        64     0.756      OK
+  greedy[first_fit]                   14026     35.0%     5.9%        97     0.000      OK
+  greedy[best_fit]                    15643     35.0%     5.9%        56     0.000      OK
+  greedy[revenue_priority]            14178     35.0%     5.9%        95     0.000      OK
+  online[first_fit]                   14026     35.0%     5.9%        97     0.000      OK
+  online[best_fit]                    15643     35.0%     5.9%        56     0.000      OK
+
+Demand 1.0x  (8 boats / 8 berths)
+  method                          gross_rev   assign%    util%   waste_m   time(s)  verify
+  --------------------------------------------------------------------------------------
+  final[base]                         45532     50.0%    13.4%       126     0.510      OK
+  final[side-by-side]                 45814     50.0%    13.2%       127     0.760      OK
+  final[soft-penalty]                 48992     55.0%    14.8%       144     1.085      OK
+  final[relocation]                   45552     50.0%    13.4%       135     1.048      OK
+  final[full-mix]                     49274     55.0%    14.6%       146     1.409      OK
+  greedy[first_fit]                   38690     47.5%    13.2%       183     0.000      OK
+  greedy[best_fit]                    41337     50.0%    13.4%       103     0.000      OK
+  greedy[revenue_priority]            41018     50.0%    13.4%        98     0.000      OK
+  online[first_fit]                   38690     47.5%    13.2%       183     0.000      OK
+  online[best_fit]                    41018     50.0%    13.4%        98     0.000      OK
+
+Demand 2.0x  (16 boats / 8 berths)
+  method                          gross_rev   assign%    util%   waste_m   time(s)  verify
+  --------------------------------------------------------------------------------------
+  final[base]                         89361     42.5%    28.9%       327     1.076      OK
+  final[side-by-side]                 91057     42.5%    27.9%       342     1.248      OK
+  final[soft-penalty]                 93633     46.2%    31.2%       355     2.287      OK
+  final[relocation]                   90991     42.5%    29.1%       340     2.302      OK
+  final[full-mix]                     98959     48.8%    30.4%       381     2.872      OK
+  greedy[first_fit]                   74250     40.0%    26.1%       305     0.001      OK
+  greedy[best_fit]                    74899     41.2%    28.4%       321     0.001      OK
+  greedy[revenue_priority]            76211     40.0%    25.5%       198     0.001      OK
+  online[first_fit]                   70513     40.0%    25.5%       254     0.001      OK
+  online[best_fit]                    79817     42.5%    29.3%       310     0.001      OK
+
+Demand 3.0x  (24 boats / 8 berths)
+  method                          gross_rev   assign%    util%   waste_m   time(s)  verify
+  --------------------------------------------------------------------------------------
+  final[base]                        113749     33.3%    35.7%       292     1.549      OK
+  final[side-by-side]                131743     36.7%    34.1%       364     1.824      OK
+  final[soft-penalty]                129471     39.2%    41.2%       342     3.494      OK
+  final[relocation]                  120289     35.8%    37.0%       317     3.631      OK
+  final[full-mix]                    151697     43.3%    39.5%       418     4.195      OK
+  greedy[first_fit]                  101337     34.2%    33.6%       309     0.001      OK
+  greedy[best_fit]                   105417     35.8%    36.4%       301     0.001      OK
+  greedy[revenue_priority]            98030     35.8%    32.7%       237     0.001      OK
+  online[first_fit]                  101865     35.0%    34.1%       281     0.001      OK
+  online[best_fit]                   106559     36.7%    37.1%       293     0.001      OK
+Saved plot to C:\Users\Loukas\Desktop\Academic\SXOLI_WORK\4th Year\8th Semester\Thesis\2nd Assigment\berth_alocator_algorithm_thesis\experiments\..\results\final_revenue.png
+Saved plot to C:\Users\Loukas\Desktop\Academic\SXOLI_WORK\4th Year\8th Semester\Thesis\2nd Assigment\berth_alocator_algorithm_thesis\experiments\..\results\final_utilization.png
+
+==============================================================================
+PART C - ONLINE vs OFFLINE (realised / offline-optimum gross revenue)
+==============================================================================
+    demand    online[first_fit]     online[best_fit]
+      0.5x              87.77%              98.12%
+      1.0x              82.55%              91.58%
+      2.0x              81.82%              87.88%
+      3.0x              86.15%              92.88%
+Saved plot to C:\Users\Loukas\Desktop\Academic\SXOLI_WORK\4th Year\8th Semester\Thesis\2nd Assigment\berth_alocator_algorithm_thesis\experiments\..\results\final_online_vs_offline.png
+
+==============================================================================
+PART B - SMALLEST-BERTH BEHAVIOUR
+==============================================================================
+  Greedy first-fit vs best-fit (best-fit = smallest fitting berth):
+    policy       revenue  served  waste/slot(m)
+    first_fit      73997       6          16.13
+    best_fit       85275       7          14.54
+    -> best-fit packs each boat tighter (lower waste/slot), keeping large
+       berths free, so it serves more boats and earns more under high demand.
+
+  MILP space_weight sweep (revenue vs compaction frontier):
+     space_weight   gross_rev   wasted_m
+              0.0       90966        662   OK
+              0.1       90966        662   OK
+              0.2       90966        662   OK
+              0.3       77351        335   OK
+              0.4       77351        335   OK
+              0.5       77351        335   OK
+             0.75       77351        335   OK
+              1.0       77351        335   OK
+Saved plot to C:\Users\Loukas\Desktop\Academic\SXOLI_WORK\4th Year\8th Semester\Thesis\2nd Assigment\berth_alocator_algorithm_thesis\experiments\..\results\final_space_tradeoff.png
+
+Done. Plots written to results/: final_revenue.png, final_utilization.png, final_online_vs_offline.png, final_space_tradeoff.png

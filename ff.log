@@ -1,0 +1,30 @@
+C:\Users\Loukas\Desktop\Academic\SXOLI_WORK\4th Year\8th Semester\Thesis\2nd Assigment\berth_alocator_algorithm_thesis\experiments\..\src\models\model_final.py:351: UserWarning: The problem has an expression with dimension greater than 2. Defaulting to the SCIPY backend for canonicalization.
+  problem.solve(solver=getattr(cp, solver), verbose=verbose)
+C:\Users\Loukas\Desktop\Academic\SXOLI_WORK\4th Year\8th Semester\Thesis\2nd Assigment\berth_alocator_algorithm_thesis\experiments\..\src\models\model_final.py:351: UserWarning: The problem has an expression with dimension greater than 2. Defaulting to the SCIPY backend for canonicalization.
+  problem.solve(solver=getattr(cp, solver), verbose=verbose)
+======================================================================
+1. MULTI-BERTH SPANNING (one boat too wide for any single berth)
+======================================================================
+  Boat 0 beam = 7.0 m; every berth is 4.0 m wide.
+  [OK] multi-berth OFF (boat 0 rejected)      revenue=    9120  served=2/3
+  [OK] multi-berth ON  (boat 0 spans a pair)  revenue=   17520  served=3/3
+  -> boat 0 spans adjacent berths [0, 1]; revenue 9120 -> 17520 (+25% span premium on the wide boat).
+Saved Gantt chart to C:\Users\Loukas\Desktop\Academic\SXOLI_WORK\4th Year\8th Semester\Thesis\2nd Assigment\berth_alocator_algorithm_thesis\experiments\..\results\final_multiberth_gantt.png
+
+======================================================================
+2. ALONGSIDE MOORING / PLAGIODETISI (length consumes the width budget)
+======================================================================
+  Boats [6, 7] request alongside; each consumes its 8.0 m length of the 12.0 m width budget instead of its 3.0 m beam.
+  [OK] alongside requests (side-by-side)      revenue=   15840  served=6/8
+  [OK] same boats all stern-to                revenue=   19200  served=8/8
+  -> alongside boats pay the +60% premium but hog width, so total served/revenue falls: 19200 (stern-to) vs 15840 (alongside).
+
+======================================================================
+3. SPLIT BERTH VIA RELOCATION (no single berth free for the whole stay)
+======================================================================
+  [OK] stable (boat 2 cannot fit one berth)   revenue=    4000  served=2/3
+  [OK] relocation (boat 2 splits berths)      revenue=    8000  served=3/3
+  -> boat 2 schedule (day, berth): [(0, 1), (1, 1), (2, 0), (3, 0)]  (served 2 -> 3 boats).
+Saved Gantt chart to C:\Users\Loukas\Desktop\Academic\SXOLI_WORK\4th Year\8th Semester\Thesis\2nd Assigment\berth_alocator_algorithm_thesis\experiments\..\results\final_split_gantt.png
+
+Done. Gantt charts: results/final_multiberth_gantt.png, results/final_split_gantt.png

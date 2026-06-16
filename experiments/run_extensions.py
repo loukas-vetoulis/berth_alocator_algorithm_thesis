@@ -1,11 +1,11 @@
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from src.data_generator import generate_instance
-from src.model_basic import solve_basic
-from src.model_extensions import solve_extended
-from src.verifier import verify_solution
-from src.visualizer import print_assignment_table, plot_revenue_comparison
+from src.core.data_generator import generate_instance
+from src.models.model_basic import solve_basic
+from src.models.model_extensions import solve_extended
+from src.core.verifier import verify_solution
+from src.core.visualizer import print_assignment_table, plot_revenue_comparison
 
 inst = generate_instance(n_berths=10, n_boats=8, seed=42)
 

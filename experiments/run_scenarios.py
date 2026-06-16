@@ -25,11 +25,11 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-from src.data_generator import generate_instance
-from src.model_basic import solve_basic
-from src.model_extensions import solve_extended
-from src.model_temporal import solve_temporal
-from src.verifier import verify_solution
+from src.core.data_generator import generate_instance
+from src.models.model_basic import solve_basic
+from src.models.model_extensions import solve_extended
+from src.models.model_temporal import solve_temporal
+from src.core.verifier import verify_solution
 
 RESULTS  = os.path.join(os.path.dirname(__file__), "..", "results")
 N_BERTHS = 8

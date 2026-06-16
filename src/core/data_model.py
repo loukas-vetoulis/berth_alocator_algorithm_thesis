@@ -27,6 +27,7 @@ class Boat:
     arrival_day: int = 0
     departure_day: int = 1
     relocation_cost: float = 50.0
+    mooring_type: str = "stern_to"  # "stern_to" (default) or "alongside" (parallel / plagiodetisi)
 
 
 @dataclass

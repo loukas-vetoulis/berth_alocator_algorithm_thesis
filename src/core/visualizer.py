@@ -155,3 +155,84 @@ def plot_revenue_comparison(
     else:
         plt.show()
     plt.close()
+
+
+def plot_grouped_metric(
+    group_labels: list[str],
+    series: dict[str, tuple[list[float], list[float]]],
+    save_path: str | None = None,
+    ylabel: str = "value",
+    title: str = "",
+    xlabel: str = "Demand (boats / berths)",
+) -> None:
+    """Grouped bar chart with error bars for multi-seed comparisons.
+
+    ``group_labels`` are the x-axis groups (e.g. demand levels). ``series`` maps
+    each method name to a (means, stds) pair, one value per group.
+    """
+    try:
+        import matplotlib.pyplot as plt
+        import numpy as np
+    except ImportError:
+        print("matplotlib not available; skipping plot.")
+        return
+
+    methods = list(series.keys())
+    n_groups = len(group_labels)
+    n_methods = max(1, len(methods))
+    x = np.arange(n_groups)
+    width = 0.8 / n_methods
+
+    fig, ax = plt.subplots(figsize=(max(8, n_groups * n_methods * 0.5), 5))
+    for k, method in enumerate(methods):
+        means, stds = series[method]
+        ax.bar(x + (k - (n_methods - 1) / 2) * width, means, width,
+               yerr=stds, capsize=3, label=method, edgecolor="black", linewidth=0.4)
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(group_labels)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.set_title(title)
+    ax.legend(fontsize=8, ncol=2)
+    plt.tight_layout()
+    if save_path:
+        plt.savefig(save_path, dpi=150)
+        print(f"Saved plot to {save_path}")
+    else:
+        plt.show()
+    plt.close()
+
+
+def plot_pareto(
+    xs: list[float],
+    ys: list[float],
+    point_labels: list[str] | None = None,
+    save_path: str | None = None,
+    xlabel: str = "Total wasted length (m)",
+    ylabel: str = "Gross revenue",
+    title: str = "Revenue vs space-efficiency trade-off",
+) -> None:
+    """Line+marker plot for a trade-off frontier (e.g. space_weight sweep)."""
+    try:
+        import matplotlib.pyplot as plt
+    except ImportError:
+        print("matplotlib not available; skipping plot.")
+        return
+
+    fig, ax = plt.subplots(figsize=(7, 5))
+    ax.plot(xs, ys, "o-", color="darkorange", markeredgecolor="black")
+    if point_labels:
+        for xv, yv, lab in zip(xs, ys, point_labels):
+            ax.annotate(lab, (xv, yv), textcoords="offset points", xytext=(6, 4), fontsize=7)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.set_title(title)
+    ax.grid(True, alpha=0.3)
+    plt.tight_layout()
+    if save_path:
+        plt.savefig(save_path, dpi=150)
+        print(f"Saved plot to {save_path}")
+    else:
+        plt.show()
+    plt.close()

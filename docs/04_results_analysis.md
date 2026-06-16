@@ -144,7 +144,54 @@ The optimal discount rate depends on price elasticity of demand (not modelled he
 
 ---
 
-## 7. Which Model to Use When
+## 7. Final Model Results (Phase 3)
+
+The Phase 3 unified model (`src/models/model_final.py`) combines every extension from Phases 1–2 plus smallest-berth packing, multi-berth spanning, and alongside mooring premiums. Two experiment scripts measure its performance.
+
+### 7.1 Feature demos (`final_features.py`)
+
+Hand-crafted instances where each Phase 3 feature clearly triggers:
+
+| Feature | Without | With | Effect |
+|---|---|---|---|
+| Multi-berth spanning | 2/3 boats, revenue 9,120 | 3/3 boats, revenue 17,520 | Wide boat spans two adjacent berths; +25% span premium |
+| Alongside mooring | 8/8 stern-to, revenue 19,200 | 6/8 alongside, revenue 15,840 | +60% premium per boat, but length consumes width budget |
+| Split berth (relocation) | 2/3 boats, revenue 4,000 | 3/3 boats, revenue 8,000 | Boat moves berth 1→0 mid-stay when no single berth is free |
+
+**Multi-berth** is essential when a boat is too wide for any single berth but fits two adjacent ones. **Alongside** is a premium, space-hungry option — the marina earns more per metre but fits fewer boats. **Split berth** unlocks bookings that would otherwise be rejected when VIP contracts or other boats block whole-berth availability.
+
+### 7.2 Main benchmark (`final_comparison.py`)
+
+Mean gross revenue over 5 seeds, 8 berths, 14 days, business rules always on:
+
+| Demand | final[base] | final[full-mix] | greedy best-fit | online best-fit |
+|---|---|---|---|---|
+| 0.5× | 16,324 | 17,169 | 15,643 | 15,643 |
+| 1.0× | 45,532 | 49,274 | 41,337 | 41,018 |
+| 2.0× | 89,361 | 98,959 | 74,899 | 79,817 |
+| 3.0× | 113,749 | 151,697 | 105,417 | 106,559 |
+
+**Key observations:**
+
+1. **The MILP beats every heuristic at every demand level.** At 3× demand, `final[full-mix]` earns ~44% more than greedy best-fit because it optimises globally across all boats and days, can use side-by-side and soft depth, and is not limited to whole-stay placements.
+2. **Side-by-side matters when berths are scarce.** Negligible at 0.5×–1× demand; +16% revenue at 3× over `final[base]`.
+3. **Greedy is fast but myopic.** Greedy/online solve in milliseconds; the MILP takes up to ~4 s but earns substantially more. Greedy and online heuristics cannot do split-berth or multi-berth spanning.
+4. **Online best-fit captures 82–93% of the offline optimum.** Knowing all requests upfront is worth 7–18% revenue.
+
+### 7.3 Smallest-berth trade-off
+
+`space_weight` sweep on a 16-boat instance (Part B of `final_comparison.py`):
+
+| space_weight | Gross revenue | Wasted length (m) |
+|---|---|---|
+| 0.0 – 0.2 | 90,966 | 662 |
+| 0.3 – 1.0 | 77,351 | 335 |
+
+Past a threshold, the model halves wasted length at ~15% revenue cost. Greedy best-fit (pure smallest-berth rule) serves 7 boats vs first-fit's 6 on the same instance, earning ~15% more — confirming that compact packing keeps large berths free for high-value boats.
+
+---
+
+## 8. Which Model to Use When
 
 | Use case | Recommended model | Key parameters |
 |---|---|---|
@@ -154,7 +201,15 @@ The optimal discount rate depends on price elasticity of demand (not modelled he
 | Multi-day season, each berth serves multiple boats | Temporal stable | `n_days`, `arrival_day`, `departure_day` |
 | Allow boats to change berths mid-stay | Temporal + relocation | `allow_relocation=True`, `max_relocations` |
 | Fill short gaps with discounted short stays | Temporal + short-stay discount | `short_stay_discount=0.2`, `min_stay_days=5` |
+| **Production marina: all features unified** | **Final model (`final_comparison.py`)** | `use_compat`, `use_utility`, `use_vip`, `side_by_side`, `soft_depth`, `allow_relocation` |
+| **Boat too wide for one berth** | **Final + multi-berth** | `allow_multi_berth=True` (+25% span premium) |
+| **Parallel / alongside mooring** | **Final + side-by-side** | `boat.mooring_type="alongside"` (+60% premium) |
+| **Split booking across berths** | **Final + relocation** | `allow_relocation=True`, `max_relocations` |
+| **Smallest-berth packing in the MILP** | **Final + space_weight** | `space_weight=0.3`–`0.5` (trade-off) |
+| **Fast approximate allocation** | **Greedy best-fit** | `src/heuristics/baselines.py` — milliseconds, ~15–44% less revenue |
+| **Real-time sequential arrivals** | **Online best-fit** | `src/heuristics/online_simulator.py` — 82–93% of offline optimum |
 | Understand how constraints affect revenue | Extensions comparison | `run_extensions.py` |
 | Understand how the model scales | Sensitivity analysis | `sensitivity_analysis.py` |
+| Understand Phase 3 features in isolation | Feature demos | `final_features.py` |
 
-**For a real marina management system:** start with the temporal stable model (Extension 2.3) plus the compatibility and utility extensions (2.1). Add VIP pre-assignment if the marina has season berth holders. Add side-by-side and relocation when the operational complexity is justified by the revenue gain.
+**For a real marina management system:** use the final model (`solve_final`) with compatibility, utility, and VIP enabled. Add side-by-side when demand exceeds supply. Add relocation when VIP contracts or seasonal patterns create partial berth availability. Enable `allow_multi_berth` if the marina has adjacent berths that can be combined for wide yachts. Use greedy best-fit only when solve time is critical and you accept the revenue gap. Use the online simulator to estimate the cost of committing to each booking before seeing future requests.

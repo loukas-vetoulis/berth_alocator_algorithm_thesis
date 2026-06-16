@@ -2,7 +2,7 @@ from __future__ import annotations
 import time
 import numpy as np
 import cvxpy as cp
-from .data_model import MarinaInstance, SolveResult
+from ..core.data_model import MarinaInstance, SolveResult
 
 
 def build_window_mask(inst: MarinaInstance) -> np.ndarray:

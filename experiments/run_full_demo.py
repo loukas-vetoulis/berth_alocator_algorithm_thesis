@@ -8,12 +8,12 @@ import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 import numpy as np
-from src.data_generator import generate_instance, generate_gapfill_instance
-from src.model_basic import solve_basic
-from src.model_extensions import solve_extended
-from src.model_temporal import solve_temporal
-from src.verifier import verify_solution
-from src.visualizer import plot_revenue_comparison, plot_temporal_gantt
+from src.core.data_generator import generate_instance, generate_gapfill_instance
+from src.models.model_basic import solve_basic
+from src.models.model_extensions import solve_extended
+from src.models.model_temporal import solve_temporal
+from src.core.verifier import verify_solution
+from src.core.visualizer import plot_revenue_comparison, plot_temporal_gantt
 
 RESULTS = os.path.join(os.path.dirname(__file__), "..", "results")
 

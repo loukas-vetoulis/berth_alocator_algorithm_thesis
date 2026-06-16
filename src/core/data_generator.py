@@ -18,6 +18,7 @@ def generate_instance(
     seed: int = 42,
     vip_fraction: float = 0.1,
     n_days: int = 1,
+    alongside_fraction: float = 0.0,
 ) -> MarinaInstance:
     rng = np.random.default_rng(seed)
 
@@ -82,6 +83,13 @@ def generate_instance(
         ]
         if valid_berths:
             boats[j].contract_berth_id = int(rng.choice(valid_berths))
+
+    # A fraction of (non-VIP) boats request alongside mooring (plagiodetisi).
+    if alongside_fraction > 0.0:
+        eligible = [j for j in range(n_boats) if boats[j].contract_berth_id is None]
+        n_along = int(round(alongside_fraction * n_boats))
+        for j in rng.choice(eligible, size=min(n_along, len(eligible)), replace=False).tolist():
+            boats[j].mooring_type = "alongside"
 
     return MarinaInstance(berths=berths, boats=boats, compat_matrix=compat, n_days=n_days)
 
@@ -168,3 +176,50 @@ def make_hand_crafted_instance() -> MarinaInstance:
         Boat(id=2, width=3.0, length=6.0,  draft=1.0),
     ]
     return MarinaInstance(berths=berths, boats=boats)
+
+
+def make_multiberth_demo_instance(n_days: int = 4) -> MarinaInstance:
+    """Four narrow adjacent berths plus one boat too wide for any single berth.
+
+    Boat 0 (beam 7 m) fits no single 4 m berth but fits an adjacent pair
+    (4 + 4 = 8 m). With multi-berth spanning it is served (at a premium);
+    without it, it is rejected.
+    """
+    berths = [
+        Berth(id=i, width=4.0, length=18.0, depth=3.0, price_per_meter=120.0,
+              berth_type="standard", max_boats=2)
+        for i in range(4)
+    ]
+    boats = [
+        Boat(id=0, width=7.0, length=14.0, draft=2.0, boat_type="motorboat",
+             arrival_day=0, departure_day=n_days),
+        Boat(id=1, width=3.0, length=10.0, draft=1.5, boat_type="sailboat",
+             arrival_day=0, departure_day=n_days),
+        Boat(id=2, width=3.0, length=9.0,  draft=1.5, boat_type="sailboat",
+             arrival_day=0, departure_day=n_days),
+    ]
+    compat = build_compat_matrix(berths, boats)
+    return MarinaInstance(berths=berths, boats=boats, compat_matrix=compat, n_days=n_days)
+
+
+def make_alongside_demo_instance(n_days: int = 3) -> MarinaInstance:
+    """Two wide berths with small boats, some requesting alongside mooring.
+
+    A stern-to boat consumes its 3 m beam of the 12 m width budget (four share a
+    berth); an alongside boat consumes its 8 m length (it hogs the berth) and
+    pays the alongside premium. Best shown with side_by_side=True.
+    """
+    berths = [
+        Berth(id=i, width=12.0, length=30.0, depth=4.0, price_per_meter=100.0,
+              berth_type="standard", max_boats=4)
+        for i in range(2)
+    ]
+    boats = []
+    for bid in range(6):
+        boats.append(Boat(id=bid, width=3.0, length=8.0, draft=1.5, boat_type="sailboat",
+                          arrival_day=0, departure_day=n_days))
+    for bid in range(6, 8):
+        boats.append(Boat(id=bid, width=3.0, length=8.0, draft=1.5, boat_type="sailboat",
+                          arrival_day=0, departure_day=n_days, mooring_type="alongside"))
+    compat = build_compat_matrix(berths, boats)
+    return MarinaInstance(berths=berths, boats=boats, compat_matrix=compat, n_days=n_days)

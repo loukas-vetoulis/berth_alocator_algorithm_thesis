@@ -2,7 +2,7 @@ from __future__ import annotations
 import time
 import numpy as np
 import cvxpy as cp
-from .data_model import MarinaInstance, SolveResult
+from ..core.data_model import MarinaInstance, SolveResult
 from .model_basic import build_feasibility_mask
 
 
@@ -83,7 +83,7 @@ def build_extended_model(
     if side_by_side:
         for i, berth in enumerate(inst.berths):
             constraints.append(x[i, :] @ width_arr <= berth.width)
-            constraints.append(cp.sum(x[i, :]) <= berth.max_boats)
+            # No max_boats cap: only the shared width budget limits how many fit.
     else:
         for i in range(n):
             constraints.append(cp.sum(x[i, :]) <= 1)

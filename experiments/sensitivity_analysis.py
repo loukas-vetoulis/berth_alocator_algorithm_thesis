@@ -1,8 +1,8 @@
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from src.data_generator import generate_instance
-from src.model_basic import solve_basic
+from src.core.data_generator import generate_instance
+from src.models.model_basic import solve_basic
 import numpy as np
 
 boat_counts = list(range(5, 51, 5))

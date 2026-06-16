@@ -1,10 +1,10 @@
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from src.data_generator import make_hand_crafted_instance, generate_instance
-from src.model_basic import solve_basic
-from src.verifier import verify_solution
-from src.visualizer import print_assignment_table, plot_marina_layout
+from src.core.data_generator import make_hand_crafted_instance, generate_instance
+from src.models.model_basic import solve_basic
+from src.core.verifier import verify_solution
+from src.core.visualizer import print_assignment_table, plot_marina_layout
 
 print("=== Hand-crafted instance (known optimal = 3050) ===")
 inst_hc = make_hand_crafted_instance()

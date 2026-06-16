@@ -239,3 +239,106 @@ A grouped bar chart is saved to `results/scenario_comparison.png`.
 **Side-by-side dips at 3x vs 2x:** Side-by-side added 9 boats at 2x but the same at 3x, while VIP pre-assignments in the extended model slightly constrain which boats share berths. This is an artifact of the fixed seed — the pattern is real at the aggregate level (ratio sweep in model_comparison.py confirms it).
 
 **Temporal always dominates static:** The gap between Temporal and the static models grows with the ratio because more boats means more sequential booking combinations to optimise across 14 days.
+
+---
+
+## `experiments/final_features.py` (Phase 3)
+
+**Question:** Do the three Phase 3 features — multi-berth spanning, alongside mooring, and split berth — work as intended?
+
+### What it does
+
+Runs three hand-crafted demos where each feature clearly triggers. Each demo solves the final model twice (feature off vs on, or alongside vs stern-to), verifies the solution, and prints revenue and boats served.
+
+1. **Multi-berth spanning** — four 4 m berths, one 7 m-beam boat. With `allow_multi_berth=False` the wide boat is rejected; with `allow_multi_berth=True` it spans adjacent berths 0–1.
+2. **Alongside mooring (πλαγιοδέτηση)** — two 12 m berths, eight 8 m boats, two requesting `mooring_type="alongside"`. Alongside boats consume their **length** (not beam) in the width budget and pay a +60% premium.
+3. **Split berth via relocation** — two berths, three boats; VIP contracts block whole-berth availability. Stable mode rejects boat 2; relocation lets it split across berths 1 and 0 mid-stay.
+
+Saves Gantt charts to `results/final_multiberth_gantt.png` and `results/final_split_gantt.png`.
+
+### Expected output
+
+```
+1. MULTI-BERTH SPANNING
+  [OK] multi-berth OFF (boat 0 rejected)      revenue=    9120  served=2/3
+  [OK] multi-berth ON  (boat 0 spans a pair)  revenue=   17520  served=3/3
+
+2. ALONGSIDE MOORING / PLAGIODETISI
+  [OK] alongside requests (side-by-side)      revenue=   15840  served=6/8
+  [OK] same boats all stern-to                revenue=   19200  served=8/8
+
+3. SPLIT BERTH VIA RELOCATION
+  [OK] stable (boat 2 cannot fit one berth)   revenue=    4000  served=2/3
+  [OK] relocation (boat 2 splits berths)      revenue=    8000  served=3/3
+  -> boat 2 schedule (day, berth): [(0, 1), (1, 1), (2, 0), (3, 0)]
+```
+
+### How to read the output
+
+- **Multi-berth:** revenue nearly doubles because the wide boat is served and pays a +25% span premium on top of the average of the two berth prices.
+- **Alongside:** the +60% premium per boat does not compensate for the width consumed — fewer boats fit, so total revenue falls even though each alongside boat pays more per metre.
+- **Split berth:** relocation costs are outweighed by serving an otherwise-rejected boat; the Gantt chart shows the boat moving from berth 1 to berth 0 on day 2.
+
+---
+
+## `experiments/final_comparison.py` (Phase 3)
+
+**Question:** How does the unified final model compare to greedy baselines and online policies across demand levels?
+
+### What it does
+
+Three parts, all using random instances (8 berths, 14 days, seeds 0–4):
+
+**Part A — Main comparison.** Five final-model configs plus three greedy and two online policies, at demand ratios 0.5×–3× (boats per berth). Metrics: gross revenue, assignment rate, berth-day utilisation, wasted length, solve time. All configs keep compatibility, shore power, and VIP on.
+
+| Config | Features enabled |
+|---|---|
+| `base` | Business rules only |
+| `side-by-side` | + side-by-side sharing |
+| `soft-penalty` | + soft depth penalty |
+| `relocation` | + mid-stay relocation |
+| `full-mix` | side-by-side + soft depth |
+
+**Part B — Smallest-berth behaviour.** Compares greedy first-fit vs best-fit wasted length, then sweeps `space_weight` (0.0–1.0) to trace the revenue-vs-compaction Pareto frontier.
+
+**Part C — Online vs offline.** Reports the competitive ratio: online greedy revenue / offline `final[base]` revenue.
+
+### Output plots
+
+| Plot | Contents |
+|---|---|
+| `final_revenue.png` | Mean gross revenue by method and demand level |
+| `final_utilization.png` | Berth-day utilisation by method |
+| `final_online_vs_offline.png` | Competitive ratio (Part C) |
+| `final_space_tradeoff.png` | Revenue vs wasted length for `space_weight` sweep (Part B) |
+
+### Expected numbers (approximate, mean over 5 seeds)
+
+**Part A — gross revenue at 3× demand:**
+
+| Method | Revenue |
+|---|---|
+| `final[full-mix]` | ~151,700 |
+| `final[base]` | ~113,750 |
+| `greedy[best_fit]` | ~105,400 |
+| `online[best_fit]` | ~106,600 |
+
+**Part B — greedy first-fit vs best-fit (2× demand):**
+
+| Policy | Revenue | Boats served | Waste/slot (m) |
+|---|---|---|---|
+| first-fit | ~74,000 | 6 | ~16.1 |
+| best-fit | ~85,300 | 7 | ~14.5 |
+
+**Part C — competitive ratio:**
+
+| Demand | online first-fit | online best-fit |
+|---|---|---|
+| 0.5× | ~88% | ~98% |
+| 1.0× | ~83% | ~92% |
+| 2.0× | ~82% | ~88% |
+| 3.0× | ~86% | ~93% |
+
+All rows should show `verify OK`. Compare methods on **gross realised revenue**, not the raw MILP objective (which is net of penalties).
+
+See [docs/06_final_model.md](06_final_model.md) for full interpretation.
