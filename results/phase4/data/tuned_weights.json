@@ -1,0 +1,26 @@
+{
+  "low": {
+    "space": 1.5,
+    "frag": 0.0,
+    "opp": 0.0,
+    "batch_days": 7,
+    "mean_revenue": 1688556.5,
+    "online_best_fit_revenue": 1660749.5
+  },
+  "base": {
+    "space": 1.5,
+    "frag": 0.0,
+    "opp": 0.0,
+    "batch_days": 7,
+    "mean_revenue": 2023322.0,
+    "online_best_fit_revenue": 1987543.0
+  },
+  "high": {
+    "space": 1.5,
+    "frag": 0.0,
+    "opp": 0.0,
+    "batch_days": 7,
+    "mean_revenue": 2198708.0,
+    "online_best_fit_revenue": 2163721.0
+  }
+}

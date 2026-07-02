@@ -1,0 +1,12 @@
+{
+  "scenario": "low",
+  "demand_mult": 0.7,
+  "request_seed": 7,
+  "marina_seed": 2025,
+  "n_berths": 460,
+  "n_transient_berths": 202,
+  "n_contract_berths": 258,
+  "n_requests": 4789,
+  "season_start": "2025-04-01",
+  "season_days": 214
+}

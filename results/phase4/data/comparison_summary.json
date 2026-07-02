@@ -1,0 +1,134 @@
+{
+  "low": {
+    "oracle": {
+      "upper_bound": 2025544.0,
+      "feasible_revenue": 1746149.0,
+      "acceptance_rate": 0.8902,
+      "occupancy": 0.5198,
+      "lp_seconds": 0.0
+    },
+    "online[first_fit]": {
+      "revenue_mean": 1706820.0,
+      "revenue_std": 3253.0,
+      "acceptance_mean": 0.9288,
+      "occupancy_mean": 0.5037,
+      "vs_oracle_ub": 0.8426
+    },
+    "online[best_fit]": {
+      "revenue_mean": 1662942.0,
+      "revenue_std": 4658.0,
+      "acceptance_mean": 0.9508,
+      "occupancy_mean": 0.5116,
+      "vs_oracle_ub": 0.821
+    },
+    "online[revenue_max]": {
+      "revenue_mean": 1384170.0,
+      "revenue_std": 10354.0,
+      "acceptance_mean": 0.7761,
+      "occupancy_mean": 0.41,
+      "vs_oracle_ub": 0.6834
+    },
+    "batch[plain]": {
+      "revenue_mean": 1394028.0,
+      "revenue_std": 6870.0,
+      "acceptance_mean": 0.78,
+      "occupancy_mean": 0.4131,
+      "vs_oracle_ub": 0.6882
+    },
+    "batch[tuned]": {
+      "revenue_mean": 1689750.0,
+      "revenue_std": 6342.0,
+      "acceptance_mean": 0.9419,
+      "occupancy_mean": 0.5145,
+      "vs_oracle_ub": 0.8342
+    }
+  },
+  "base": {
+    "oracle": {
+      "upper_bound": 2385710.0,
+      "feasible_revenue": 2088729.0,
+      "acceptance_rate": 0.6807,
+      "occupancy": 0.6841,
+      "lp_seconds": 0.0
+    },
+    "online[first_fit]": {
+      "revenue_mean": 1998294.0,
+      "revenue_std": 29411.0,
+      "acceptance_mean": 0.8298,
+      "occupancy_mean": 0.6342,
+      "vs_oracle_ub": 0.8376
+    },
+    "online[best_fit]": {
+      "revenue_mean": 1981639.0,
+      "revenue_std": 29102.0,
+      "acceptance_mean": 0.8582,
+      "occupancy_mean": 0.645,
+      "vs_oracle_ub": 0.8306
+    },
+    "online[revenue_max]": {
+      "revenue_mean": 1575145.0,
+      "revenue_std": 23463.0,
+      "acceptance_mean": 0.6834,
+      "occupancy_mean": 0.5112,
+      "vs_oracle_ub": 0.6602
+    },
+    "batch[plain]": {
+      "revenue_mean": 1585985.0,
+      "revenue_std": 22275.0,
+      "acceptance_mean": 0.6865,
+      "occupancy_mean": 0.5156,
+      "vs_oracle_ub": 0.6648
+    },
+    "batch[tuned]": {
+      "revenue_mean": 2014640.0,
+      "revenue_std": 28982.0,
+      "acceptance_mean": 0.8423,
+      "occupancy_mean": 0.6499,
+      "vs_oracle_ub": 0.8445
+    }
+  },
+  "high": {
+    "oracle": {
+      "upper_bound": 2528907.0,
+      "feasible_revenue": 2208651.0,
+      "acceptance_rate": 0.5774,
+      "occupancy": 0.7581,
+      "lp_seconds": 0.0
+    },
+    "online[first_fit]": {
+      "revenue_mean": 2170773.0,
+      "revenue_std": 4714.0,
+      "acceptance_mean": 0.7487,
+      "occupancy_mean": 0.7226,
+      "vs_oracle_ub": 0.8584
+    },
+    "online[best_fit]": {
+      "revenue_mean": 2169655.0,
+      "revenue_std": 8417.0,
+      "acceptance_mean": 0.7757,
+      "occupancy_mean": 0.7317,
+      "vs_oracle_ub": 0.8579
+    },
+    "online[revenue_max]": {
+      "revenue_mean": 1683443.0,
+      "revenue_std": 16932.0,
+      "acceptance_mean": 0.6134,
+      "occupancy_mean": 0.5855,
+      "vs_oracle_ub": 0.6657
+    },
+    "batch[plain]": {
+      "revenue_mean": 1695321.0,
+      "revenue_std": 18223.0,
+      "acceptance_mean": 0.6181,
+      "occupancy_mean": 0.5905,
+      "vs_oracle_ub": 0.6704
+    },
+    "batch[tuned]": {
+      "revenue_mean": 2204501.0,
+      "revenue_std": 8227.0,
+      "acceptance_mean": 0.7555,
+      "occupancy_mean": 0.7367,
+      "vs_oracle_ub": 0.8717
+    }
+  }
+}

@@ -9,7 +9,9 @@
       "Bash(python -X utf8 experiments/sensitivity_analysis.py)",
       "Bash(python -X utf8 experiments/run_full_demo.py)",
       "Bash(python -X utf8 experiments/model_comparison.py)",
-      "Bash(python -X utf8 experiments/run_scenarios.py)"
+      "Bash(python -X utf8 experiments/run_scenarios.py)",
+      "PowerShell(python --version; python -c \"import cvxpy, numpy, matplotlib; print\\('cvxpy', cvxpy.__version__\\); print\\('numpy', numpy.__version__\\)\"; python -c \"import scipy; print\\('scipy', scipy.__version__\\)\")",
+      "PowerShell(python -c \"import cvxpy as cp; print\\(cp.installed_solvers\\(\\)\\)\")"
     ]
   }
 }

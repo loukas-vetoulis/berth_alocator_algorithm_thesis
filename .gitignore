@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Scratch / logs
+*.log
+_smoke*.py
+*.tmp
+
+# OS
+Thumbs.db
+.DS_Store
